@@ -408,7 +408,6 @@ namespace Autobazar_konzolova_aplikacia
                 case "0":
                     break;
 
-
                 default: break;
             }
         }
@@ -419,11 +418,9 @@ namespace Autobazar_konzolova_aplikacia
         public static void SaveCars(string path)
         {
             File.Delete(path);
-            int i = 0;
-            while (i < catalogue.Count())
+            foreach (var item in catalogue)
             {
-                File.AppendAllText(path,catalogue[i].DescribeMeTxt() );
-                i++;
+                File.AppendAllText(path, item.DescribeMeTxt());
             }
         }
 
@@ -506,14 +503,7 @@ namespace Autobazar_konzolova_aplikacia
         public static bool IsEmptyCatalogue()
         {
             bool isEmpty = !catalogue.Any();
-            if (isEmpty)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (isEmpty);
         }
 
         /// <summary>
