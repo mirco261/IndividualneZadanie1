@@ -415,17 +415,17 @@ namespace Autobazar_konzolova_aplikacia
                 File.AppendAllText(path,catalogue[i].DescribeMeTxt() );
                 i++;
             }
-            string[] exit = { "Zatváram za sebou", "Ukladám do súboru", "Zametám za sebou", "Zhasínam" };
+            string[] exit = {  "Ukladám do súboru", "Zametám za za sebou", "Zhasínam", "Zatváram", };
             for (int j = 0; j < 4; j++)
             {
                 for (int f = 0; f < 11; f++)
                 {
                     Console.Clear();
-                    Console.Write($"\n  {f * 10}%  **{exit[i]}**");
+                    Console.Write($"\n  {f * 10}%  **{exit[j]}**");
                     Thread.Sleep(50);
                 }
             }
-
+            Environment.Exit(0);
         }
 
         public static void LoadCars(string path)

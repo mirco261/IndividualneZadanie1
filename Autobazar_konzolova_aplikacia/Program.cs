@@ -89,7 +89,6 @@ namespace Autobazar_konzolova_aplikacia
 
                     case "0": //ukončiť a zatvoriť
                         Catalogue.SaveCars(path);
-                        Environment.Exit(0);
                         break;
 
                     default:
