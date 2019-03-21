@@ -32,10 +32,16 @@ namespace Autobazar_konzolova_aplikacia
                 {
                     case "1":  //vloženie nového auta
                         Catalogue.CreateCar();
+                        Console.Write("\nPre návrat do menu stlač tlačidlo na klávesnici.");
+                        Console.ReadKey();
                         break;
 
                     case "2":   //Vypísanie auta
                         Console.WriteLine("**Zoznam áut v katalógu**\n");
+                        if (Catalogue.IsEmptyCatalogue())
+                        {
+                            Console.WriteLine("Katalóg áut je prázdny.\n");
+                        }
                         Catalogue.YourCars(); 
                         break;
 
@@ -53,7 +59,16 @@ namespace Autobazar_konzolova_aplikacia
                         string idEdit = Console.ReadLine();
                         if (Catalogue.CheckInt(idEdit))
                         {
-                            Catalogue.EditCar(int.Parse(idEdit));
+                            if (Catalogue.ExistID(int.Parse(idEdit)))
+                            {
+                                Catalogue.EditCar(int.Parse(idEdit));
+                            }
+                            else
+                            {
+                                Console.WriteLine($"\nAuto s ID: {int.Parse(idEdit)} neexistuje.\n");
+                                Console.Write("Pre návrat do menu stlač tlačidlo na klávesnici.");
+                                Console.ReadKey();
+                            }
                         }
                         break;
 
@@ -81,14 +96,29 @@ namespace Autobazar_konzolova_aplikacia
                         }
                         Catalogue.SaveCars(path);
                         Console.WriteLine("\n**Zapísanie do súboru bolo úspešné**\n");
+                        Console.Write("Pre návrat do menu stlač tlačidlo na klávesnici.");
+                        Console.ReadKey();
                         break;
 
                     case "7":  //načítanie zo súboru
-                        Catalogue.LoadCars(path); 
+                        Catalogue.LoadCars(path);
+                        Console.Write("Pre návrat do menu stlač tlačidlo na klávesnici.");
+                        Console.ReadKey();
                         break;
 
                     case "0": //ukončiť a zatvoriť
                         Catalogue.SaveCars(path);
+                        string[] exit = { "Ukladám do súboru", "Zametám za za sebou", "Zhasínam", "Zatváram", };
+                        for (int j = 0; j < 4; j++)
+                        {
+                            for (int f = 0; f < 11; f++)
+                            {
+                                Console.Clear();
+                                Console.Write($"\n  {f * 10}%  **{exit[j]}**");
+                                Thread.Sleep(50);
+                            }
+                        }
+                        Environment.Exit(0);
                         break;
 
                     default:

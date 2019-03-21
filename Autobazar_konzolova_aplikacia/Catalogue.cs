@@ -140,13 +140,13 @@ namespace Autobazar_konzolova_aplikacia
                 if (crash == "ano")
                 {
                     crashed = true;
-                    Console.Write("Auto bolo havarované\n");
+                    Console.Write("Auto bolo havarované\n\n");
                     break;
                 }
                 else if (crash == "nie")
                 {
                     crashed = false;
-                    Console.WriteLine("Auto nebolo havarované\n");
+                    Console.WriteLine("Auto nebolo havarované\n\n");
                     break;
                 }
                 else
@@ -181,8 +181,6 @@ namespace Autobazar_konzolova_aplikacia
             Car car = new Car(ID, make, model, year, mileage, door, crashed, city, price, fuelKey);
             catalogue.Add(car);
             Console.WriteLine("\nNové auto bolo vytvorené");
-            Thread.Sleep(3000);
-            Console.Clear();
         }
 
         /// <summary>
@@ -234,7 +232,8 @@ namespace Autobazar_konzolova_aplikacia
         /// </summary>
         public static void EditCar(int id)
         {
-            Console.WriteLine($"\n**Editácia auta číslo {id}**\n\n" +
+            Console.Clear();
+            Console.WriteLine($"**Editácia auta číslo {id}**\n\n" +
                 $"MENU 1 = Značka\n" +
                 "MENU 2 = Model\n" +
                 "MENU 3 = Ročník\n"+
@@ -244,7 +243,7 @@ namespace Autobazar_konzolova_aplikacia
                 "MENU 7 = Mesto\n"+
                 "MENU 8 = Cena\n"+
                 "MENU 9 = Palivo\n"+
-                "MENU 0 = Späť do menu\nZadajte číslo:");
+                "MENU 0 = Späť do menu\n\nZadaj číslo MENU z ponuky vyššie:");
 
             string switchKey = Console.ReadLine();
             switch (switchKey)
@@ -252,13 +251,21 @@ namespace Autobazar_konzolova_aplikacia
                 case "1":
                     Console.WriteLine("Zadaj novú značku auta: ");
                     string newMake = Console.ReadLine();
-                    catalogue[id]._make = newMake;
+                    try
+                    {
+                        catalogue[id].Make = newMake;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Edituješ auto, ktoré neexistuje\nPre návrat do hlavného menu stlač tlačidlo na klávesnici.");
+                        Console.ReadKey();
+                    }
                     break;
 
                 case "2":
                     Console.WriteLine("Zadaj nový model auta: ");
                     string newModel = Console.ReadLine();
-                    catalogue[id]._model = newModel;
+                    catalogue[id].Model = newModel;
                     break;
 
                 case "3":
@@ -268,7 +275,7 @@ namespace Autobazar_konzolova_aplikacia
                         try
                         {
                             string newYear = Console.ReadLine();
-                            catalogue[id]._year = int.Parse(newYear);
+                            catalogue[id].Year = int.Parse(newYear);
                             break;
                         }
                         catch (Exception)
@@ -284,7 +291,7 @@ namespace Autobazar_konzolova_aplikacia
                     {
                         try
                         {
-                            catalogue[id]._mileage = int.Parse(Console.ReadLine());
+                            catalogue[id].Mileage = int.Parse(Console.ReadLine());
                             break;
                         }
                         catch (System.FormatException)
@@ -300,7 +307,7 @@ namespace Autobazar_konzolova_aplikacia
                     {
                         try
                         {
-                            catalogue[id]._doors = int.Parse(Console.ReadLine());
+                            catalogue[id].Doors = int.Parse(Console.ReadLine());
                             break;
                         }
                         catch (Exception)
@@ -320,12 +327,12 @@ namespace Autobazar_konzolova_aplikacia
                             crashed = crashed.ToLower();
                             if (crashed == "ano")
                             {
-                                catalogue[id]._crashed = true;
+                                catalogue[id].Crashed = true;
                                 break;
                             }
                             else if (crashed == "nie")
                             {
-                                catalogue[id]._crashed = false;
+                                catalogue[id].Crashed = false;
                                 break;
                             }
                             else
@@ -346,14 +353,14 @@ namespace Autobazar_konzolova_aplikacia
                 case "7":
                     Console.WriteLine("Zadaj nový názov mesta: ");
                     string newCity = Console.ReadLine();
-                    catalogue[id]._city = newCity;
+                    catalogue[id].City = newCity;
                     Console.WriteLine("Nové mesto predaja auta bol úspešne zmenený");
                     break;
 
                 case "8":
                     Console.WriteLine("Zadaj novú cenu auta: ");
                     string newPrice = Console.ReadLine();
-                    catalogue[id]._price = int.Parse(newPrice);
+                    catalogue[id].Price = int.Parse(newPrice);
                     Console.WriteLine("Nová cena auta bola úspešne zmenená");
                     break;
 
@@ -406,6 +413,9 @@ namespace Autobazar_konzolova_aplikacia
             }
         }
 
+        /// <summary>
+        /// Uloží autá do txt súboru
+        /// </summary>
         public static void SaveCars(string path)
         {
             File.Delete(path);
@@ -415,19 +425,11 @@ namespace Autobazar_konzolova_aplikacia
                 File.AppendAllText(path,catalogue[i].DescribeMeTxt() );
                 i++;
             }
-            string[] exit = {  "Ukladám do súboru", "Zametám za za sebou", "Zhasínam", "Zatváram", };
-            for (int j = 0; j < 4; j++)
-            {
-                for (int f = 0; f < 11; f++)
-                {
-                    Console.Clear();
-                    Console.Write($"\n  {f * 10}%  **{exit[j]}**");
-                    Thread.Sleep(50);
-                }
-            }
-            Environment.Exit(0);
         }
 
+        /// <summary>
+        /// Načíta autá z txt súboru
+        /// </summary>
         public static void LoadCars(string path)
         {
             string curFile = path;
@@ -439,10 +441,10 @@ namespace Autobazar_konzolova_aplikacia
                 do
                 {
                     Car newcar = new Car(i);
-                    newcar._make = txt[i].Split('\t')[0];
-                    newcar._model = txt[i].Split('\t')[1];
-                    newcar._year = int.Parse(txt[i].Split('\t')[2]);
-                    newcar._mileage = int.Parse(txt[i].Split('\t')[3]);
+                    newcar.Make = txt[i].Split('\t')[0];
+                    newcar.Model = txt[i].Split('\t')[1];
+                    newcar.Year = int.Parse(txt[i].Split('\t')[2]);
+                    newcar.Mileage = int.Parse(txt[i].Split('\t')[3]);
                     if (txt[i].Split('\t')[4] == "benzin")
                     {
                         newcar._fuel = eFuelType.benzin;
@@ -459,30 +461,25 @@ namespace Autobazar_konzolova_aplikacia
                     {
                         newcar._fuel = eFuelType.LPG;
                     }
-                    newcar._crashed = bool.Parse(txt[i].Split('\t')[5]);
-                    newcar._doors = int.Parse(txt[i].Split('\t')[6]);
-                    newcar._city = txt[i].Split('\t')[7];
-                    newcar._price = int.Parse(txt[i].Split('\t')[8]);
+                    newcar.Crashed = bool.Parse(txt[i].Split('\t')[5]);
+                    newcar.Doors = int.Parse(txt[i].Split('\t')[6]);
+                    newcar.City = txt[i].Split('\t')[7];
+                    newcar.Price = int.Parse(txt[i].Split('\t')[8]);
                     catalogue.Add(newcar);
                     i++;
                 } while (i < txt.Length);
                 {
-                    for (int j = 1; j < 101; j++)
+                    for (int f = 1; f < 101; f++)
                     { 
                     Console.Clear();
                     Console.WriteLine("**Načítavam zo súboru**");
-                    Console.Write($"  {i}% načítaných údajov zo súboru");
+                    Console.Write($"  {f}% načítaných údajov zo súboru");
                     Thread.Sleep(10);
                     }
                 }
                 Console.WriteLine("\n\n**Načítanie zo súboru bolo úspešné**\n");
-                Console.Write("Pre návrat do menu stlač tlačidlo na klávesnici.");
-                Console.ReadKey();
-
             }
             else Console.WriteLine("**Databáza sa nenašla**\nZoznam áut nemohol byť načítaný\n");
-            Console.Write("Pre návrat do menu stlač tlačidlo na klávesnici.");
-            Console.ReadKey();
         }
 
         /// <summary>
@@ -501,6 +498,37 @@ namespace Autobazar_konzolova_aplikacia
                 Console.ReadKey();
                 return false;
             } while (true);
+        }
+
+        /// <summary>
+        /// Vráti TRUE ak je katalóg áut prázdny
+        /// </summary>
+        public static bool IsEmptyCatalogue()
+        {
+            bool isEmpty = !catalogue.Any();
+            if (isEmpty)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Pozrie sa, či existuje dané ID v katalógu
+        ///</summary>
+        public static bool ExistID(int id)
+        {
+            for (int i = 0; i < catalogue.Count(); i++)
+            {
+                if (catalogue[i].ID == id)
+                {
+                return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -9,18 +9,27 @@ namespace Autobazar_konzolova_aplikacia
     public class Car
     {
         //Zadanie premenných
-        public int _ID = 0;
-        public int _year =0;
-        public int _mileage= 25150;
-        public string _make = "Opel";
-        public string _model = "Corsa";
-        public int _price = 12000;
-        public string _city = "Žilina";
-        public int _doors = 5;
-        public bool _crashed = false;
+        private int _ID = 0;
+        private int _year =0;
+        private int _mileage= 25150;
+        private string _make = "Opel";
+        private string _model = "Corsa";
+        private int _price = 12000;
+        private string _city = "Žilina";
+        private int _doors = 5;
+        private bool _crashed = false;
         int lastID = 0;
 
-        public int ID { get => _ID; }
+        public int ID { get => _ID; set { }  }
+        public int Year { get => _year; set { } }
+        public int Mileage { get=> _mileage; set { } }
+        public string Make { get => _make; set { } }
+        public string Model { get => _model; set { } }
+        public int Price { get => _price; set { } }
+        public string City { get => _city; set { } }
+        public int Doors { get => _doors; set { } }
+        public bool Crashed { get => _crashed; set { } }
+
 
         public eFuelType _fuel ;
 
@@ -63,7 +72,6 @@ namespace Autobazar_konzolova_aplikacia
             }
             lastID++;
         }
-
 
         //Konštruktor s premennými
         public Car(int ID, string make, string model, int year, int mileage, int door, bool crashed, string city, int price, eFuelType fuelkey)
